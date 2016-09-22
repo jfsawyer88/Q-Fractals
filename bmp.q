@@ -1,12 +1,14 @@
 // writes a pixel array to a bmp file
 write_bmp:{ [file; pixel_array]
 
- height:count       pixel_array;  / height
- width: count first pixel_array;  / width
+ height:count       pixel_array; / height
+ width: count first pixel_array; / width
+ pad: ((0 3 2 1) (3*width) mod 4) # 0x00; / padding
 
- data: raze each (reverse each) each pixel_array;    / raze pixels
- data: data ,\: ((0 3 2 1) (3*width) mod 4) # 0x00;  / pad rows
- data: raze reverse data;                            / raze rows
+ data: (reverse each) each pixel_array; / reverse rgb values
+ data: raze each data;                  / raze rows
+ data: data ,\: pad;                    / pad rows
+ data: raze reverse data;               / raze array
 
  psize: count data;
 
